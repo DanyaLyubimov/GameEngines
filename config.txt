@@ -1,4 +1,4 @@
-int window 1920 1080
+int window_size 1920 800
 
 float speed 1.5
 

@@ -6,11 +6,7 @@
 #include <sstream>
 
 
-std::unordered_map<std::string, std::vector<float>> configFloat;
-std::unordered_map<std::string, std::vector<int>> configInt;
-std::unordered_map<std::string, std::vector<std::string>> configString;
-
-void loadConfig(const std::string& path)
+void Config::load(const std::string& path)
 {
     std::ifstream file(path);
     std::string line;
@@ -29,7 +25,7 @@ void loadConfig(const std::string& path)
             while (iss >> v)
                 values.push_back(v);
 
-            configInt[key] = values;
+            intValues[key] = values;
         }
         else if (type == "float"){
             float v;
@@ -37,7 +33,7 @@ void loadConfig(const std::string& path)
             while (iss >> v)
                 values.push_back(v);
 
-            configFloat[key] = values;
+            floatValues[key] = values;
         }
         else if (type == "string"){
             std::string v;
@@ -45,15 +41,15 @@ void loadConfig(const std::string& path)
             while (iss >> v)
                 values.push_back(v);
 
-            configString[key] = values;
+            stringValues[key] = values;
         }
         
     }
 }
 
-void printConfigs()
+void Config::printConfigs() const
 {
-    for (const auto& [key, values] : configInt)
+    for (const auto& [key, values] : intValues)
     {
         std::cout << key << ": ";
         for (const auto& v : values)
@@ -62,7 +58,7 @@ void printConfigs()
     }
 
     std::cout << "\n=== FLOAT CONFIG ===\n";
-    for (const auto& [key, values] : configFloat)
+    for (const auto& [key, values] : floatValues)
     {
         std::cout << key << ": ";
         for (const auto& v : values)
@@ -71,11 +67,26 @@ void printConfigs()
     }
 
     std::cout << "\n=== STRING CONFIG ===\n";
-    for (const auto& [key, values] : configString)
+    for (const auto& [key, values] : stringValues)
     {
         std::cout << key << ": ";
         for (const auto& v : values)
             std::cout << v << " ";
         std::cout << "\n";
     }
+}
+
+int Config::getInt(const std::string& key, int i) const
+{
+    return intValues.at(key)[i];
+}
+
+float Config::getFloat(const std::string& key, int i) const
+{
+    return floatValues.at(key)[i];
+}
+
+std::string Config::getString(const std::string& key, int i) const
+{
+    return stringValues.at(key)[i];
 }

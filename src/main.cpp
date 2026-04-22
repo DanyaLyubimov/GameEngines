@@ -10,11 +10,21 @@ struct Logo {
     sf::IntRect rect;
 };
 
+// class TestWindow{
+//     Config config;
+
+//     void all_work(){
+
+//     }
+// }
+
 int main(){
-    loadConfig("/home/vboxuser/GameDev/config.txt");
-    printConfigs();
+    Config cfg;
+
+    cfg.load("/home/vboxuser/GameDev/config.txt");
+    cfg.printConfigs();
     
-    sf::RenderWindow window(sf::VideoMode({120, 800}), "my window");
+    sf::RenderWindow window(sf::VideoMode({cfg.getInt("window_size", 0), cfg.getInt("window_size", 1)}), "my window");
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     ImGui::SFML::Init(window);
@@ -30,7 +40,7 @@ int main(){
     static float speed = 5.0f;
     static float scale = 0.5f;
     static char pause_text[20] = "Pause"; 
-    float color[3] = {1.0f, 0.0f, 0.0f};
+    float color[3] = {0.0f, 1.0f, 0.0f};
 
     Logo texture_logos[3];
 

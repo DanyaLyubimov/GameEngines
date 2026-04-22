@@ -4,9 +4,16 @@
 #include <unordered_map>
 #include <vector>
 
-extern std::unordered_map<std::string, std::vector<float>> configFloat;
-extern std::unordered_map<std::string, std::vector<int>> configInt;
-extern std::unordered_map<std::string, std::vector<std::string>> configString;
+class Config{
+public:
+    void load(const std::string& path);
+    void printConfigs() const;
 
-void loadConfig(const std::string& path);
-void printConfigs();
+    int getInt(const std::string& key, int i) const;
+    float getFloat(const std::string& key, int i) const;
+    std::string getString(const std::string& key, int i) const;
+private:
+    std::unordered_map<std::string, std::vector<float>> floatValues;
+    std::unordered_map<std::string, std::vector<int>> intValues;
+    std::unordered_map<std::string, std::vector<std::string>> stringValues;
+};
