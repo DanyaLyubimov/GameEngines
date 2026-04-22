@@ -1,4 +1,4 @@
-#include "config.hpp"
+#include "Config.hpp"
 
 #include <fstream>
 #include <string>
@@ -49,6 +49,7 @@ void Config::load(const std::string& path)
 
 void Config::printConfigs() const
 {
+    std::cout << "\n=== INT CONFIG ===\n";
     for (const auto& [key, values] : intValues)
     {
         std::cout << key << ": ";

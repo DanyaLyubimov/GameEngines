@@ -1,6 +1,7 @@
 set(TARGET_NAME GameDev)
 set(SOURCES main.cpp
-    config.cpp)
+    Config.cpp
+    Logo.cpp)
 
 add_executable(${TARGET_NAME} 
     ${SOURCES})

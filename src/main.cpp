@@ -3,7 +3,7 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-#include <config.hpp>
+#include <Config.hpp>
 
 struct Logo {
     sf::Texture texture;
@@ -40,7 +40,7 @@ int main(){
     static float speed = 5.0f;
     static float scale = 0.5f;
     static char pause_text[20] = "Pause"; 
-    float color[3] = {0.0f, 1.0f, 0.0f};
+    float color[3] = {1.0f, 1.0f, 0.0f};
 
     Logo texture_logos[3];
 
