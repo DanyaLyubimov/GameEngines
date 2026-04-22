@@ -1,0 +1,5 @@
+int window 1920 1080
+
+float speed 1.5
+
+string pause Pause
