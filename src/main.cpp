@@ -4,11 +4,8 @@
 #include <imgui-SFML.h>
 
 #include <Config.hpp>
+#include <Logo.hpp>
 
-struct Logo {
-    sf::Texture texture;
-    sf::IntRect rect;
-};
 
 // class TestWindow{
 //     Config config;
@@ -17,6 +14,8 @@ struct Logo {
 
 //     }
 // }
+
+
 
 int main(){
     Config cfg;
@@ -28,48 +27,25 @@ int main(){
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     ImGui::SFML::Init(window);
+    std::string logosPaths[3] = {cfg.getString("paths_to_logos", 0), cfg.getString("paths_to_logos", 1), cfg.getString("paths_to_logos", 2)};
+    LogoRect logo(logosPaths, cfg.getIntVec("logos_rects").data());
 
     const char* logos[] = {
         "DVD",
-        "BlueRay",
-        "CD"
+        "CD",
+        "BlueRay"
     };
 
-    bool shouldDraw = true;
-    static int selectedLogo = 0;
-    static float speed = 5.0f;
-    static float scale = 0.5f;
+
     static char pause_text[20] = "Pause"; 
-    float color[3] = {1.0f, 1.0f, 0.0f};
-
-    Logo texture_logos[3];
-
-    texture_logos[0].texture.loadFromFile("/home/vboxuser/GameDev/logos/DVDLogo.png");
-    texture_logos[0].rect = sf::IntRect({0,100}, {540, 340});
-
-    texture_logos[1].texture.loadFromFile("/home/vboxuser/GameDev/logos/CDLogo.png");
-    texture_logos[1].rect = sf::IntRect({0,0}, {1200, 581});
-
-    texture_logos[2].texture.loadFromFile("/home/vboxuser/GameDev/logos/BluRayLogo.png");
-    texture_logos[2].rect = sf::IntRect({0,0}, {783, 522});
-    
-    for(auto& tex : texture_logos){
-        tex.texture.setSmooth(true);
-        tex.texture.setRepeated(false);
-    }
-
     sf::Vector2f center(
         window.getSize().x / 2,
         window.getSize().y / 2
     );
 
-    sf::Sprite sprite(texture_logos[0].texture);
-    sprite.setTextureRect(texture_logos[0].rect);
-    sprite.setColor(sf::Color(color[0]*255, color[1]*255, color[2]*255));
-    sprite.setScale({scale, scale});
-    sprite.setPosition(center);
-    sf::FloatRect spriteBounds = sprite.getLocalBounds();
-    sprite.setOrigin(spriteBounds.size / 2.f);
+    // logo.sprite.setPosition(center);
+    // sf::FloatRect spriteBounds = logo.sprite.getLocalBounds();
+    // logo.sprite.setOrigin(spriteBounds.size / 2.f);
 
 
     sf::Font font("/home/vboxuser/GameDev/fonts/futura.ttf");
@@ -85,8 +61,6 @@ int main(){
     sf::Clock deltaClock;
 
 
-    int x = 1;
-    int y = 1;
     bool pause = false;
 
 
@@ -115,24 +89,21 @@ int main(){
         ImGui::NewLine();
         // ImGui::Checkbox("shold draw", &shouldDraw);
         ImGui::SetNextItemWidth(1000);
-        ImGui::Combo("Select logo", &selectedLogo, logos, 3);
+        ImGui::Combo("Select logo", &logo.selectedLogo, logos, 3);
         ImGui::NewLine();
-        ImGui::InputFloat("Speed", &speed);
+        ImGui::InputFloat("Speed", &logo.speed);
         ImGui::NewLine();
-        ImGui::InputFloat("Scale", &scale);
+        ImGui::InputFloat("Scale", &logo.scale);
         ImGui::NewLine();
-        ImGui::SliderFloat("Red", &color[0], 0.0f, 1.0f);
-        ImGui::SliderFloat("Green", &color[1], 0.0f, 1.0f);
-        ImGui::SliderFloat("Blue", &color[2], 0.0f, 1.0f);
+        ImGui::SliderFloat("Red", &logo.color[0], 0.0f, 1.0f);
+        ImGui::SliderFloat("Green", &logo.color[1], 0.0f, 1.0f);
+        ImGui::SliderFloat("Blue", &logo.color[2], 0.0f, 1.0f);
         ImGui::NewLine();
         if (ImGui::Button("Reset")){
-            sprite.setPosition(center);
+            logo.setSpriteInitialPos();
         }
         ImGui::InputText("Pause", pause_text, 20);
-        sprite.setTexture(texture_logos[selectedLogo].texture);
-        sprite.setTextureRect(texture_logos[selectedLogo].rect);
-        sprite.setScale({scale, scale});
-        sprite.setColor(sf::Color(color[0]*255, color[1]*255, color[2]*255));
+        logo.updateSprite();
         text.setString(pause_text);
 
         ImGui::End();
@@ -143,19 +114,10 @@ int main(){
         if(pause){
             window.draw(text);
         } else{
-            sprite.move({x*speed, y*speed});
 
-            sf::FloatRect bounds = sprite.getGlobalBounds();
-            
+            logo.checkColision(window.getSize().x, window.getSize().y);
 
-            if ((bounds.position.y + bounds.size.y >= window.getSize().y) || (bounds.position.y <= 0)){
-                y = -y;
-            }
-            if ((bounds.position.x + bounds.size.x >= window.getSize().x )|| (bounds.position.x <= 0)){
-                x = -x;
-            }
-
-            window.draw(sprite);
+            window.draw(logo.sprite);
         }
 
         ImGui::SFML::Render(window);

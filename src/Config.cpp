@@ -82,6 +82,12 @@ int Config::getInt(const std::string& key, int i) const
     return intValues.at(key)[i];
 }
 
+ std::vector<int> Config::getIntVec(const std::string& key) const
+{
+    return intValues.at(key);
+}
+
+
 float Config::getFloat(const std::string& key, int i) const
 {
     return floatValues.at(key)[i];

@@ -10,6 +10,7 @@ public:
     void printConfigs() const;
 
     int getInt(const std::string& key, int i) const;
+    std::vector<int> getIntVec(const std::string& key) const;
     float getFloat(const std::string& key, int i) const;
     std::string getString(const std::string& key, int i) const;
 private:
