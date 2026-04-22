@@ -14,7 +14,7 @@ int main(){
     loadConfig("/home/vboxuser/GameDev/config.txt");
     printConfigs();
     
-    sf::RenderWindow window(sf::VideoMode({1520, 800}), "my window");
+    sf::RenderWindow window(sf::VideoMode({120, 800}), "my window");
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     ImGui::SFML::Init(window);
@@ -30,7 +30,7 @@ int main(){
     static float speed = 5.0f;
     static float scale = 0.5f;
     static char pause_text[20] = "Pause"; 
-    float color[3] = {0.0f, 1.0f, 0.0f};
+    float color[3] = {1.0f, 0.0f, 0.0f};
 
     Logo texture_logos[3];
 
