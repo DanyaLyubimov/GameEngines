@@ -1,0 +1,8 @@
+int window_size 1920 800
+string path_to_font /home/vboxuser/GameDev/fonts/futura.ttf
+string paths_to_logos /home/vboxuser/GameDev/logos/DVDLogo.png /home/vboxuser/GameDev/logos/CDLogo.png /home/vboxuser/GameDev/logos/BluRayLogo.png
+int logos_rects 0 100 540 340 0 0 1200 581 0 0 783 522
+float speed 1.5
+float scale 0.5
+float logo_color 0 255 0
+string pause Pause
