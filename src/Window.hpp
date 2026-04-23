@@ -3,32 +3,32 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
-#include <Config.hpp>
-
-struct Logo {
-    sf::Texture texture;
-    sf::IntRect rect;
-};
+#include<Logo.hpp>
+#include<Config.hpp>
+#include<Text.hpp>
 
 class Window {
 public:
-    Window(const int wWidth, const int wHeight);
+    Config cfg;
+    std::shared_ptr<LogoRect> logo;
+    std::shared_ptr<TextObj> text;
+
+    sf::RenderWindow window;
+    sf::Clock deltaClock;
+    const char* logosCombo[3] = {
+        "DVD",
+        "CD",
+        "BlueRay"
+    };
+    bool pause = false;
+
+    Window(std::string configPath);
+    sf::Vector2f getCenterPos();
+    void Initialize();
+
+    void UpdateUserInput();
+    void UpdateLogic();
+    void UpdateGui();
+    void Render();
     void Run();
-
-private:
-    Config config;
-    const char* _logos[];
-    static int _selectedLogo;
-    static float _speed;
-    static float _scale;
-    static char _pauseText[20];
-    static float _logoColor[3];
-
-
-    
-
-
 };
-
-
-
